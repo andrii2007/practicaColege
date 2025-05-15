@@ -110,12 +110,12 @@
 #include <vector>
 #include <string>
 
-bool checksFloat(std::string str){
-    for(int i=0;i<str.size();i++){
-        return true;
-    }
-    return false;
-}
+// bool checksFloat(std::string str){
+//     for(int i=0;i<str.size();i++){
+//         return true;
+//     }
+//     return false;
+// }
 
 
 

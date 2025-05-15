@@ -5,13 +5,12 @@
 
 bool checksFloat(std::string str){
     for(int i=0;i<str.size();i++){
-        return true;
+        if(str[i]=='.'){
+            return true;
+        }
     }
     return false;
 }
-
-
-
 bool checkMinus(std::string str){
     if(str[0]=='-'){
         return true;
@@ -152,36 +151,78 @@ std::string makeType(std::string &value,std::string type){
 }
 
 void showREsult(std::string value, std::string type){
+
+    if(checksFloat(value)){
+
+        std::string numberss="";
+        std::string firstPAth="",SecondPath="";
+
+    for (int i=0; i<=value.length(); i++)
+    {
+        if(i==value.length()){
+                SecondPath=numberss;
+        }else if (value[i]!='.'){
+            numberss+=value[i]; 
+        }else{
+                firstPAth=numberss;
+            numberss="";
+    }
+    }
+    int first=ConvertTo10(firstPAth);
+    std::string resultfirst16=ConvertTo16(first);
+    std::string resultfirst8=ConvertTo8(first);
+    std::string resultfirst2=ConvertTo2(first);
+
+    makeType(SecondPath,type);
+
+    // std::cout<<SecondPath<<'\n';
+    // std::cout<<firstPAth<<'\n';
+
+    int second=ConvertTo10(SecondPath);
+    std::string resultsecond16=ConvertTo16(second);
+    std::string resultsecond8=ConvertTo8(second);
+    std::string resultsecond2=ConvertTo2(second);
+
+        if(resultfirst16[2]=='0'){
+        resultfirst16.erase(0,3);
+    }else{
+        resultfirst16.erase(0,2);
+    }
+        if(resultsecond16[2]=='0'){
+        resultsecond16.erase(0,3);
+    }else{
+        resultsecond16.erase(0,2);
+    }
+
+        std::cout<<resultfirst8.erase(0,1)<<'.'<<resultsecond8.erase(0,1)<<" (OCT)"<<'\n';
+        std::cout<<first<<'.'<<second<<" DEC"<<'\n';
+        std::cout<<resultfirst16<<'.'<<resultsecond16<<" (HEX)"<<'\n';
+        std::cout<<resultfirst2.erase(0,2)<<'.'<<resultsecond2.erase(0,2)<<" (BIN)"<<'\n';
+
+
+    }else{
     int y=ConvertTo10(value);
     std::string result=ConvertTo16(y);
     std::string resultSec=ConvertTo8(y);
     std::string resultSecs=ConvertTo2(y);
+
+
 
     if(result[2]=='0'){
         result.erase(0,3);
     }else{
         result.erase(0,2);
     }
-
-    if(type=="(BIN)"||type=="BIN"){
         std::cout<<resultSec.erase(0,1)<<" (OCT)"<<'\n';
         std::cout<<y<<" DEC"<<'\n';
         std::cout<<result<<" (HEX)"<<'\n';
-    }else if(type=="(HEX)"||type=="HEX"){
         std::cout<<resultSecs.erase(0,2)<<" (BIN)"<<'\n';
-        std::cout<<resultSec.erase(0,1)<<" (OCT)"<<'\n';
-        std::cout<<y<<" DEC"<<'\n';
-    }else if(type=="(OCT)"||type=="OCT"){
-        std::cout<<resultSecs.erase(0,2)<<" (BIN)"<<'\n';
-        std::cout<<y<<" DEC"<<'\n';
-        std::cout<<result<<" (HEX)"<<'\n';
-    }else if(type=="(DEC)"||type=="DEC"){
-        std::cout<<resultSecs.erase(0,2)<<" (BIN)"<<'\n';
-        std::cout<<resultSec.erase(0,1)<<" (OCT)"<<'\n';
-        std::cout<<result<<" (HEX)"<<'\n';
-    }
 
 }
+
+}
+
+
 
 void start(int &choice){
     std::cout<<"1-Convert from 1 system to others"<<'\n';
@@ -195,10 +236,10 @@ bool CheckCorectTypes(std::string CheckCorectTypes,std::string value){
     if(CheckCorectTypes=="BIN"||CheckCorectTypes=="(BIN)"){
         int check=0;
         for(int i=0;i<value.length();i++){
-            if(value[i]==0 || value[i]=='0'){
+            if(value[i]==0 || value[i]=='0' ||value[i]=='.'){
                 check=check;
 
-            }else if(value[i]==1 || value[i]=='1'){
+            }else if(value[i]==1 || value[i]=='1'||value[i]=='.'){
                 check=check;
             }else {
                 check++;
@@ -210,9 +251,9 @@ bool CheckCorectTypes(std::string CheckCorectTypes,std::string value){
     }else if(CheckCorectTypes=="OCT"||CheckCorectTypes=="(OCT)"){
         int check=0;
         for(int i=0;i<value.length();i++){
-            if(value[i]>=0 && value[i]<=7){
+            if(value[i]>=0 && value[i]<=7||value[i]=='.'){
                 check=check;
-            }else if(value[i]=='0'||value[i]=='1'||value[i]=='2'||value[i]=='3'||value[i]=='4'||value[i]=='5'||value[i]=='6'||value[i]=='7') {
+            }else if(value[i]=='0'||value[i]=='1'||value[i]=='2'||value[i]=='3'||value[i]=='4'||value[i]=='5'||value[i]=='6'||value[i]=='7'||value[i]=='.') {
                 check=check;
             }else{
                 check++;
@@ -220,21 +261,16 @@ bool CheckCorectTypes(std::string CheckCorectTypes,std::string value){
         }
         return check==0;
     }else if(CheckCorectTypes=="HEX"||CheckCorectTypes=="(HEX)"){
-        int check=0, number=0,
-        letter =0;
+        int check=0;
         for(int i=0;i<value.length();i++){
-            if(value[i]>=0 && value[i]<=9 && number==0){
+            if(value[i]>=0 && value[i]<=9 || value[i]=='.'){
                 check=check;
-               number++;
-               letter=0;
-            }else if((value[i]=='0'||value[i]=='1'||value[i]=='2'||value[i]=='3'||value[i]=='4'||value[i]=='5'||value[i]=='6'||value[i]=='7'||value[i]=='8'||value[i]=='9')&&number==0){
+            }else if((value[i]=='0'||value[i]=='1'||value[i]=='2'||value[i]=='3'||value[i]=='4'||value[i]=='5'||value[i]=='6'||value[i]=='7'||value[i]=='8'||value[i]=='9')){
                 check=check;
-                number++;
-                letter=0;
-            }else if((value[i]=='A'||value[i]=='B'||value[i]=='C'||value[i]=='D'||value[i]=='E'||value[i]=='F')&&letter==0){
+                
+            }else if((value[i]=='A'||value[i]=='B'||value[i]=='C'||value[i]=='D'||value[i]=='E'||value[i]=='F')){
                 check=check;
-                number=0;
-                letter++;
+         
             }else{
                 check++;
             }
@@ -243,7 +279,7 @@ bool CheckCorectTypes(std::string CheckCorectTypes,std::string value){
     }else if(CheckCorectTypes=="DEC"||CheckCorectTypes=="(DEC)"){
         int checks=0;
         for(int i=0;i<value.length();i++){
-            if(value[i]=='0'||value[i]=='1'||value[i]=='2'||value[i]=='3'||value[i]=='4'||value[i]=='5'||value[i]=='6'||value[i]=='7'||value[i]=='8'||value[i]=='9'){
+            if(value[i]=='0'||value[i]=='1'||value[i]=='2'||value[i]=='3'||value[i]=='.'||value[i]=='4'||value[i]=='5'||value[i]=='6'||value[i]=='7'||value[i]=='8'||value[i]=='9'){
                 checks=checks;
             }else{
                 checks++;
@@ -255,6 +291,8 @@ bool CheckCorectTypes(std::string CheckCorectTypes,std::string value){
         return  false;
     }
 }
+
+
 
 bool FirstChoiceConverte(){
 
@@ -281,7 +319,6 @@ bool FirstChoiceConverte(){
     }
     }
 
-    
     if (CheckCorectTypes(type,value))
     {
         makeType(value,type);
@@ -301,6 +338,7 @@ bool FirstChoiceConverte(){
         return true;
 
     }
+    
 }
 
 bool SecondChoiceCalculator(){
@@ -344,13 +382,13 @@ bool SecondChoiceCalculator(){
     if(checkMinus(first)){
         first.erase(0,1);
     }
-    std::cout<<first<<'\n';
+    // std::cout<<first<<'\n';
 
 
 
     std::string typesLEtters1= ChecksTypes(first,0);
     std::string typesLEtter2= ChecksTypes(second,0);
-    int y,y2;
+    double y,y2;
 
 
 
@@ -381,23 +419,93 @@ bool SecondChoiceCalculator(){
     int checkCorrectTypes=0;
 
     if (CheckCorectTypes(typesLEtters1,copyFirst)){
-        y=ConvertTo10(first);
-        checkCorrectTypes++;
+        if(checksFloat(first)){
+        std::string numberss="";
+        std::string firstPAth="",SecondPath="";
+        for (int i=0; i<=first.length(); i++)
+        {
+            if(i==first.length()){
+                SecondPath=numberss;
+            }else if (first[i]!='.'){
+                numberss+=first[i]; 
+            }else{
+                firstPAth=numberss;
+                numberss="";
+        }
+        }
+
+        makeType(SecondPath,typesLEtters1);
+        int result=ConvertTo10(firstPAth);
+        int resultsec=ConvertTo10(SecondPath);
+            int temp = resultsec;
+            int digits = 0;
+
+            while (temp != 0) {
+                temp /= 10;
+                digits++;
+            }
+
+            double resultNUM = resultsec / pow(10.0, digits);
+        double resultint=resultNUM+result;
+            y=resultint;
+            checkCorrectTypes++;
+            // std::cout<<y<<'\n';
+        }else{
+            
+            y=ConvertTo10(first);
+            checkCorrectTypes++;
+        }
+            
     }else{
         if(typesLEtters1=="(BIN)"||typesLEtters1=="BIN"){
             std::cout<<"Your type is not correct BIN it`s number from 0 to 1"<<'\n';
         }else if(typesLEtters1=="(OCT)"||typesLEtters1=="OCT"){
             std::cout<<"Your type is not correct OCT it`s number from 0 to 7"<<'\n';
         }else if(typesLEtters1=="(HEX)"||typesLEtters1=="HEX"){
-            std::cout<<"Your type is not correct HEX it`s number from 0 to 9 and A to F also letter and number cannot be beside"<<'\n';
+            std::cout<<"Your type is not correct HEX it`s number from 0 to 9 "<<'\n';
         }else if(typesLEtters1=="(DEC)"||typesLEtters1=="DEC"){
             std::cout<<"Your type is not correct DEC it`s number from 0 to 9"<<'\n';
     }
     }
 
     if (CheckCorectTypes(typesLEtter2,copySecond)){
-        y2=ConvertTo10(second);
-        checkCorrectTypes++;
+      if(checksFloat(second)){
+        std::string numberss="";
+        std::string firstPAth="",SecondPath="";
+        for (int i=0; i<=first.length(); i++)
+        {
+            if(i==second.length()){
+                SecondPath=numberss;
+            }else if (second[i]!='.'){
+                numberss+=second[i]; 
+            }else{
+                firstPAth=numberss;
+                numberss="";
+        }
+        }
+
+        makeType(SecondPath,typesLEtter2);
+        int result=ConvertTo10(firstPAth);
+        int resultsec=ConvertTo10(SecondPath);
+            int temp = resultsec;
+            int digits = 0;
+            
+            while (temp != 0) {
+                temp /= 10;
+                digits++;
+            }
+
+            double resultNUM = resultsec / pow(10.0, digits);
+        double resultint=resultNUM+result;
+            y2=resultint;
+            checkCorrectTypes++;
+            // std::cout<<y2<<'\n';
+
+        }else{
+            
+            y2=ConvertTo10(second);
+            checkCorrectTypes++;
+        }
     }else{
         if(typesLEtter2=="(BIN)"||typesLEtter2=="BIN"){
             std::cout<<"Your type is not correct BIN it`s number from 0 to 1"<<'\n';
@@ -421,8 +529,10 @@ bool SecondChoiceCalculator(){
     }
 
 
+
+
     if(checkCorrectTypes==2){
-    int resultAction;
+    double resultAction;
     switch (symbow[0])
     {
     case '+':
@@ -446,24 +556,40 @@ bool SecondChoiceCalculator(){
     default:
         break;
     }
-    if(resultAction<0){
-        std::cout<<resultAction<<" "<<"(DEC)"<<'\n';
-    }else{
-        if(ChecksTypes(first,resultAction)==ChecksTypes(second,resultAction)&& ChecksTypes(second,resultAction)!="(DEC)" ){
-            std::cout<<doWithTypes(first,resultAction)<<" "<<ChecksTypes(first,resultAction)<<'\n';
-            std::cout<<resultAction<<" "<<"(DEC)"<<'\n';
-            
-        }else if(ChecksTypes(first,resultAction)==ChecksTypes(second,resultAction)&& ChecksTypes(second,resultAction)=="(DEC)"){
-            std::cout<<resultAction<<" "<<"(DEC)"<<'\n';
-        }else if (ChecksTypes(first,resultAction)!=ChecksTypes(second,resultAction)&& ChecksTypes(second,resultAction)!="(DEC)"){
-            std::cout<<doWithTypes(first,resultAction)<<" "<<ChecksTypes(first,resultAction)<<'\n';
-            std::cout<<doWithTypes(second,resultAction)<<' '<<ChecksTypes(second,resultAction)<<'\n';
-            std::cout<<resultAction<<" "<<"(DEC)"<<'\n';
-        }else {
-            std::cout<<doWithTypes(first,resultAction)<<" "<<ChecksTypes(first,resultAction)<<'\n';
-            std::cout<<doWithTypes(second,resultAction)<<' '<<ChecksTypes(second,resultAction)<<'\n';
-    }   
-}
+
+    // std::cout<<std::to_string(resultAction)<<'\n';
+    std::string ResultActionStr=std::to_string(resultAction);
+
+
+
+        std::string numberss="";
+        std::string firstPAth="",SecondPath="";
+        for (int i=0; i<=ResultActionStr.length(); i++)
+        {
+            if(i==ResultActionStr.length()){
+                SecondPath=numberss;
+            }else if (ResultActionStr[i]!='.'){
+                numberss+=ResultActionStr[i]; 
+            }else{
+                firstPAth=numberss;
+                numberss="";
+        }
+        }
+        int result=ConvertTo10(firstPAth);
+        int resultsec=ConvertTo10(SecondPath);
+
+  if(resultAction<0){
+    std::cout<<resultAction<<" "<<"(DEC)"<<'\n';
+    std::cout<<ConvertTo2(result).substr(2,ConvertTo2(result).length())<<'.'<<ConvertTo2(resultsec).substr(2,ConvertTo2(result).length())<<" "<<"BIN"<<'\n';
+    std::cout<<ConvertTo16(result).substr(2,ConvertTo2(result).length())<<'.'<<ConvertTo16(resultsec).substr(2,ConvertTo2(result).length())<<" "<<"HEX"<<'\n';
+    std::cout<<ConvertTo8(result).substr(1,ConvertTo2(result).length())<<'.'<<ConvertTo8(resultsec).substr(1,ConvertTo2(result).length())<<" "<<"OCT"<<'\n';
+    
+    } else{
+           std::cout<<resultAction<<" "<<"(DEC)"<<'\n';
+    std::cout<<ConvertTo2(result).substr(2,ConvertTo2(result).length())<<'.'<<ConvertTo2(resultsec).substr(2,ConvertTo2(result).length())<<" "<<"BIN"<<'\n';
+    std::cout<<ConvertTo16(result).substr(2,ConvertTo2(result).length())<<'.'<<ConvertTo16(resultsec).substr(2,ConvertTo2(result).length())<<" "<<"HEX"<<'\n';
+    std::cout<<ConvertTo8(result).substr(1,ConvertTo2(result).length())<<'.'<<ConvertTo8(resultsec).substr(1,ConvertTo2(result).length())<<" "<<"OCT"<<'\n';
+    }
 
     return false;
 }else{
@@ -471,6 +597,7 @@ bool SecondChoiceCalculator(){
     return true;
 }
 }
+
 
 
 

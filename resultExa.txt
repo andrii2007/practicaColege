@@ -5,3 +5,42 @@ In thE quiEt town of ElmsvillE whErE thE roads wound through goldEn fiElds and s
  But now Rusty sat forgottEn in a dusty garagE bEhind Mr CartErs housE Mr CartEr oncE a strEEt racEr in his youth had grown old and so had Rusty WEEds crEpt undEr thE garagE door and cobwEbs clung to thE mirrors No onE bEliEvEd Rusty could movE again  ExcEpt for Sam
 
  Sam was Mr CartErs grandson a shy yEarold with a wild imagination and a lovE for old cars WhilE his friEnds playEd vidEo gamEs Sam spEnt hours skEtching cars in his notEbook OnE summEr morning hE pEEkEd into thE garagE and mEt Rusty for thE first timE
+
+
+if(checksFloat(first)){
+        std::string numberss="";
+        std::string firstPAth="",SecondPath="";
+        for (int i=0; i<=first.length(); i++)
+        {
+            if(i==first.length()){
+                SecondPath=numberss;
+            }else if (first[i]!='.'){
+                numberss+=first[i]; 
+            }else{
+                firstPAth=numberss;
+                numberss="";
+        }
+        }
+
+        makeType(SecondPath,typesLEtters1);
+        int result=ConvertTo10(firstPAth);
+        int resultsec=ConvertTo10(SecondPath);
+            int temp = resultsec;
+            int digits = 0;
+            
+            while (temp != 0) {
+                temp /= 10;
+                digits++;
+            }
+
+            double resultNUM = resultsec / pow(10.0, digits);
+        double resultint=resultNUM+result;
+            std::cout<<resultint<<'\n';
+            y=resultint;
+            checkCorrectTypes++;
+            std::cout<<y<<'\n';
+        }else{
+            
+            y=ConvertTo10(first);
+            checkCorrectTypes++;
+        }
